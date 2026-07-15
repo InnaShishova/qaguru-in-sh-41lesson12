@@ -15,48 +15,27 @@ public class TestBase {
 
     @BeforeAll
     static void beforeAll() {
-        String baseUrl = System.getProperty(
-                "baseUrl",
-                "https://demoqa.com"
-        );
+        Configuration.baseUrl =
+                System.getProperty("baseUrl", "https://demoqa.com");
 
-        String remoteUrl = System.getProperty(
-                "remoteUrl",
-                ""
-        );
+        Configuration.browser =
+                System.getProperty("browser", "chrome");
 
-        String browser = System.getProperty(
-                "browser",
-                "chrome"
-        );
+        Configuration.browserVersion =
+                System.getProperty("browserVersion", "");
 
-        String browserVersion = System.getProperty(
-                "browserVersion",
-                ""
-        );
+        Configuration.browserSize =
+                System.getProperty("browserSize", "1920x1080");
 
-        String browserSize = System.getProperty(
-                "browserSize",
-                "1920x1080"
-        );
-
-        boolean headless = Boolean.parseBoolean(
+        Configuration.headless = Boolean.parseBoolean(
                 System.getProperty("headless", "false")
         );
 
-        Configuration.baseUrl = baseUrl;
-        Configuration.browser = browser;
-        Configuration.browserSize = browserSize;
-        Configuration.headless = headless;
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 10000;
 
-        if (!browserVersion.isBlank()) {
-            Configuration.browserVersion = browserVersion;
-        }
-
-        if (!remoteUrl.isBlank()) {
-            Configuration.remote = remoteUrl;
+        if (!System.getProperty("remote", "").isBlank()) {
+            Configuration.remote = System.getProperty("remote");
 
             DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -86,8 +65,7 @@ public class TestBase {
             Attach.pageSource();
             Attach.browserConsoleLogs();
 
-            if (Configuration.remote != null
-                    && !Configuration.remote.isBlank()) {
+            if (!System.getProperty("remote", "").isBlank()) {
                 Attach.addVideo();
             }
 
